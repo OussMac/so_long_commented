@@ -5,10 +5,18 @@
 # include <stdlib.h> // for malloc, size_t
 #include <unistd.h>
 
+typedef struct s_parse
+{
+    int x_max;
+    int y_max;
+}   t_parse;
 
 
+// processing map
+int     process_map(int fd, t_parse *parse);
+void    get_max_x_y(int fd, t_parse *parse);
 
-//printing errors
+// printing errors
 void    usage_error(void);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
