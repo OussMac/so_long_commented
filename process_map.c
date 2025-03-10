@@ -6,7 +6,6 @@ char    *cut_row(char *row_uncut)
     char    *temp;
     char    *new_row;
 
-    printf("==> %s\n", row_uncut);
     if (!row_uncut)
         return (NULL);
     len = ft_strlen(row_uncut);
@@ -57,6 +56,7 @@ void    process_map(int fd, t_parse *parse)
         parse->y++;
     }
     close(fd);
+    params_check(parse);
 }
 
 void    get_max_x_y(int fd, t_parse *parse)
@@ -65,8 +65,6 @@ void    get_max_x_y(int fd, t_parse *parse)
     char    *row;
 
     i = 0;
-    parse->x_max = 0;
-	parse->y_max = 0;
     row = get_next_line(fd);
     if (!row)
     {

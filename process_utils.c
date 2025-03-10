@@ -4,6 +4,8 @@ void	ft_bzero(void *s, size_t n)
 {
 	size_t			i;
 	unsigned char	*ptr;
+
+    i = 0;
 	if (n == 0)
 		return ;
 	ptr = (unsigned char *) s;
@@ -51,24 +53,24 @@ void    width_check(char *row, int fd, t_parse *parse)
         free(row);
         get_next_line(INVALID_S);
         close(fd);
-        exit (EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
 }
 
-// void    params_check(t_parse *parse)
-// {
-//     bool    error;
+void    params_check(t_parse *parse)
+{
+    bool    error;
 
-//     error = false;
-//     if (parse->e_count != 1)
-//         error = true;
-//     if (parse->p_count != 1)
-//         error = true;
-//     if (parse->c_count < 1)
-//         error = true;
-//     if (error)
-//     {
-
-//     }
-    
-// }
+    error = false;
+    if (parse->e_count != 1)
+        error = true;
+    if (parse->p_count != 1)
+        error = true;
+    if (parse->c_count < 1)
+        error = true;
+    if (error)
+    {
+        print_error(PARAMS);
+        exit(EXIT_FAILURE);
+    }
+}

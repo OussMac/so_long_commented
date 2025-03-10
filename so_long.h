@@ -10,6 +10,7 @@
 # define MAP_GAP 5
 # define SYMBOL 6
 # define RECT 7
+# define PARAMS 8
 
 // constant return
 # define VALID_SYMBOL 0
@@ -40,6 +41,7 @@ bool    cmp_symbol(char c);
 void	ft_bzero(void *s, size_t n);
 void    count_params(char symbol, t_parse *parse);
 void    width_check(char *row, int fd, t_parse *parse);
+void    params_check(t_parse *parse);
 
 // printing errors
 void	print_error(int error);
