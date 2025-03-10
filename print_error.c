@@ -18,6 +18,7 @@ void	print_error(int error)
 	else if (error == RECT)
 		ft_putstr_fd("The Map Must Be Rectangular.", STDERR_FILENO);
 	else if (error == PARAMS)
-		ft_putstr_fd("Please Enter Exactly 1 Player.\n1 Exit.\nAt least 1 Coin\n"
-			, STDERR_FILENO);
+		ft_putstr_fd("Please Enter Exactly 1 Player.\n1 Exit.\nAt least 1 Coin\n", STDERR_FILENO);
+	else if (error == MALLOC_F)
+		ft_putstr_fd("Malloc Failure.", STDERR_FILENO);
 }

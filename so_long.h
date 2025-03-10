@@ -11,6 +11,7 @@
 # define SYMBOL 6
 # define RECT 7
 # define PARAMS 8
+# define MALLOC_F 9
 
 // constant return
 # define VALID_SYMBOL 0
@@ -20,6 +21,7 @@
 # include <stdlib.h> // for malloc, size_t
 # include <unistd.h> // for write
 # include <stdbool.h> // for boolean checks
+# include <math.h> // for randomizing blocks
 
 typedef struct s_parse
 {
@@ -30,6 +32,8 @@ typedef struct s_parse
     int p_count;
     int c_count;
     int e_count;
+    int player_x;
+    int player_y;
 }   t_parse;
 
 
@@ -42,6 +46,10 @@ void	ft_bzero(void *s, size_t n);
 void    count_params(char symbol, t_parse *parse);
 void    width_check(char *row, int fd, t_parse *parse);
 void    params_check(t_parse *parse);
+char    *cut_row(char *row_uncut);
+
+// flood fill path parsing
+int parse_path(char *map_name, t_parse *parse);
 
 // printing errors
 void	print_error(int error);

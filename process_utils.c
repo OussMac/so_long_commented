@@ -35,7 +35,11 @@ bool    cmp_symbol(char c)
 void    count_params(char symbol, t_parse *parse)
 {
     if (symbol == 'P')
+    {
+        parse->player_x = parse->x;
+        parse->player_y = parse->y;
         parse->p_count++;
+    }
     else if (symbol == 'C')
         parse->c_count++;
     else if (symbol == 'E')
