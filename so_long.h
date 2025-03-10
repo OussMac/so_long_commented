@@ -25,6 +25,7 @@
 # include <unistd.h> // for write
 # include <stdbool.h> // for boolean checks
 # include <math.h> // for randomizing blocks
+# include "minilibx-linux/mlx.h"
 
 typedef struct s_parse
 {

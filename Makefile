@@ -9,14 +9,15 @@ SRC=	so_long.c print_error.c print_utils.c get_next_line.c \
 OBJ=$(SRC:.c=.o)
 
 NAME= so_long
+MLX=minilibx-linux/libmlx_Linux.a
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(OBJ) -o $@
+	$(CC) $(FLAGS) $(OBJ) -L$(MLX) $(MLX) -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $@
 
 %.o: %.c $(HEADER)
-	$(CC) -c $< -o $@
+	$(CC) $(FLAGS) -I/usr/include -I$(MLX) -O3 -c $< -o $@
 
 fclean: clean
 	rm -f $(NAME)
