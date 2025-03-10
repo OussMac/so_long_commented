@@ -27,7 +27,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	i = 0;
 	if (!s1 || !s2)
 		return (1);
-	while (i < n && (s1[i] && s2[i]))
+	while (i < n && s1[i] && s2[i])
 	{
 		if (s1[i] != s2[i])
 			return (s1[i] - s2[i]);
@@ -35,5 +35,19 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	}
 	if (i < n)
 		return (s1[i] - s2[i]);
-	return (0);
+	return (s1[i] - s2[i]);
+}
+
+void	input_check(int argc, char **av)
+{
+	if (argc != 2)
+	{
+		print_error(USAGE);
+		exit(EXIT_FAILURE);
+	}
+	if(ft_strncmp(ft_strrchr(av[1], '.'), ".ber", 4) != 0)
+	{
+		print_error(USAGE);
+		exit(EXIT_FAILURE);
+	}
 }

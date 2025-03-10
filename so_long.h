@@ -1,23 +1,48 @@
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
+
+// constants for errors
+# define USAGE 1
+# define INVALID 2
+# define OP_FAIL 3
+# define EMPTY 4
+# define MAP_GAP 5
+# define SYMBOL 6
+# define RECT 7
+
+// constant return
+# define VALID_SYMBOL 0
+# define INVALID_S -1
+
 # include <fcntl.h>  // for open and close.
 # include <stdlib.h> // for malloc, size_t
-#include <unistd.h>
+# include <unistd.h> // for write
+# include <stdbool.h> // for boolean checks
 
 typedef struct s_parse
 {
+    int x;
+    int y;
     int x_max;
     int y_max;
+    int p_count;
+    int c_count;
+    int e_count;
 }   t_parse;
 
 
 // processing map
-int     process_map(int fd, t_parse *parse);
-void    get_max_x_y(int fd, t_parse *parse);
+void	input_check(int argc, char **av);
+int     primary_parse(char *map_name, t_parse *parse);
+void    process_map(int fd, t_parse *parse);
+bool    cmp_symbol(char c);
+void	ft_bzero(void *s, size_t n);
+void    count_params(char symbol, t_parse *parse);
+void    width_check(char *row, int fd, t_parse *parse);
 
 // printing errors
-void    usage_error(void);
+void	print_error(int error);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 char	*ft_strrchr(const char *s, int c);
