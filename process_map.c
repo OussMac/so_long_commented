@@ -89,6 +89,7 @@ int primary_parse(char *map_name, t_parse *parse)
 {
     int		fd;
 
+    ft_bzero(parse, sizeof(t_parse));
     fd = open(map_name, O_RDONLY);
 	if (fd == -1)
     {

@@ -12,6 +12,9 @@
 # define RECT 7
 # define PARAMS 8
 # define MALLOC_F 9
+# define PATH_BLOCKED 10
+
+# define oussmalloc(...) NULL // for malloc failure testing.
 
 // constant return
 # define VALID_SYMBOL 0
@@ -34,7 +37,16 @@ typedef struct s_parse
     int e_count;
     int player_x;
     int player_y;
+    int found_c;
+    int found_e;
 }   t_parse;
+
+// struct for the floodfill algorithm.
+typedef struct s_pos
+{
+    int x;
+    int y;
+}   t_pos;
 
 
 // processing map
@@ -49,7 +61,15 @@ void    params_check(t_parse *parse);
 char    *cut_row(char *row_uncut);
 
 // flood fill path parsing
-int parse_path(char *map_name, t_parse *parse);
+void    parse_path(char *map_name, t_parse *parse);
+
+//for testing.
+void    print_grid(char **grid);
+
+// game loop
+void    game_loop(char *map_name, t_parse *parse, int *fd);
+char    **create_2d_grid(int fd, t_parse *parse);
+void    free_grid(char **grid);
 
 // printing errors
 void	print_error(int error);
