@@ -14,6 +14,13 @@
 # define MALLOC_F 9
 # define PATH_BLOCKED 10
 
+// constants for the game loop
+# define PIXELS 96
+# define TITLE "ESCAPE MINECRAFT"
+# define GRASS "textures/grass_block2.xpm"
+# define COBBLE "textures/cobble_block.xpm"
+# define COBBLE_T "textures/cobble_block_side.xpm"
+
 # define oussmalloc(...) NULL // for malloc failure testing.
 
 // constant return
@@ -25,7 +32,27 @@
 # include <unistd.h> // for write
 # include <stdbool.h> // for boolean checks
 # include <math.h> // for randomizing blocks
-# include "minilibx-linux/mlx.h"
+# include ".mlx_linux/mlx.h"
+
+typedef struct s_blocks
+{
+    void    *grass;
+    void    *cobble;
+    void    *cobble_t;
+}   t_blocks;
+
+typedef struct s_game
+{
+    int         pxl;
+    char        **map;
+    t_blocks    blocks;
+    void        *mlx;
+    void        *win;
+    int         map_w;
+    int         map_h;
+    int         blocks_x;
+    int         blocks_y;
+}   t_game;
 
 typedef struct s_parse
 {
@@ -52,7 +79,7 @@ typedef struct s_pos
 
 // processing map
 void	input_check(int argc, char **av);
-int     primary_parse(char *map_name, t_parse *parse);
+void    primary_parse(char *map_name, t_parse *parse, int fd);
 void    process_map(int fd, t_parse *parse);
 bool    cmp_symbol(char c);
 void	ft_bzero(void *s, size_t n);
@@ -68,8 +95,9 @@ void    parse_path(char *map_name, t_parse *parse);
 void    print_grid(char **grid);
 
 // game loop
-void    game_loop(char *map_name, t_parse *parse, int *fd);
+void    game_loop(char *map_name, t_parse *parse, int fd);
 char    **create_2d_grid(int fd, t_parse *parse);
+void    fill_map(t_game *game);
 void    free_grid(char **grid);
 
 // printing errors

@@ -85,9 +85,8 @@ void    get_max_x_y(int fd, t_parse *parse)
     }
 }
 
-int primary_parse(char *map_name, t_parse *parse)
+void    primary_parse(char *map_name, t_parse *parse, int fd)
 {
-    int		fd;
 
     ft_bzero(parse, sizeof(t_parse));
     fd = open(map_name, O_RDONLY);
@@ -104,7 +103,6 @@ int primary_parse(char *map_name, t_parse *parse)
         print_error(OP_FAIL);
 		exit(EXIT_FAILURE);
     }
-    return (fd);
 }
 
 /*      process_symbol

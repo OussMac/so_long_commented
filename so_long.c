@@ -5,10 +5,11 @@ int	main(int argc, char *av[])
 	t_parse	parse;
 	int		fd;
 
+	fd = 3;
 	input_check(argc, av);
-	fd = primary_parse(av[1], &parse);
+	primary_parse(av[1], &parse, fd);
 	process_map(fd, &parse);
 	parse_path(av[1], &parse);
-	game_loop(av[1], &parse, &fd);
-	return (close(fd), EXIT_SUCCESS);
+	game_loop(av[1], &parse, fd);
+	return (EXIT_SUCCESS);
 }
