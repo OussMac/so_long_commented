@@ -26,11 +26,23 @@ static void init_images(t_game *game)
 static void init_window(t_parse *parse, t_game *game)
 {
     game->mlx = mlx_init();
+    if (!game->mlx)
+    {
+        ft_putstr_fd("Error\nFailed To Initalize MLX Instance.\n", 2);
+        exit (EXIT_FAILURE);
+    }
     game->map_w = parse->x_max * PIXELS;
     game->map_h = parse->y_max * PIXELS;
     game->blocks_x = parse->x_max;
     game->blocks_y = parse->y_max;
     game->win = mlx_new_window(game->mlx, game->map_w, game->map_h, TITLE);
+    if (!game->win)
+    {
+        mlx_destroy_display(game->mlx);
+        free(game->mlx);
+        ft_putstr_fd("Error\nFailed To Open Window.\n", 2);
+        exit (EXIT_FAILURE);
+    }
 }
 
 static void    build_map(char *map_name, t_parse *parse, t_game *game, int fd)
@@ -39,6 +51,9 @@ static void    build_map(char *map_name, t_parse *parse, t_game *game, int fd)
 	if (fd == -1)
     {
         print_error(OP_FAIL);
+        mlx_destroy_window(game->mlx, game->win);
+        mlx_destroy_display(game->mlx);
+        free(game->mlx);
 		exit(EXIT_FAILURE);
     }
     game->map = create_2d_grid(fd, parse);
