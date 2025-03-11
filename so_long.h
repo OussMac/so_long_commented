@@ -13,19 +13,23 @@
 # define PARAMS 8
 # define MALLOC_F 9
 # define PATH_BLOCKED 10
+# define IMAGE 11
 
 // constants for the game loop
 # define PIXELS 96
 # define TITLE "ESCAPE MINECRAFT"
 # define GRASS "textures/grass_block2.xpm"
 # define COBBLE "textures/cobble_block.xpm"
-# define COBBLE_T "textures/cobble_block_side.xpm"
+# define COBBLE_T "textures/cobble_block_top.xpm"
 
 # define oussmalloc(...) NULL // for malloc failure testing.
 
 // constant return
 # define VALID_SYMBOL 0
 # define INVALID_S -1
+
+// key codes
+# define ESC 65307
 
 # include <fcntl.h>  // for open and close.
 # include <stdlib.h> // for malloc, size_t
@@ -95,10 +99,13 @@ void    parse_path(char *map_name, t_parse *parse);
 void    print_grid(char **grid);
 
 // game loop
-void    game_loop(char *map_name, t_parse *parse, int fd);
+void    load_game(char *map_name, t_parse *parse, int fd);
 char    **create_2d_grid(int fd, t_parse *parse);
 void    fill_map(t_game *game);
+void    game_loop(t_game    *game);
 void    free_grid(char **grid);
+void    destroy_images(t_game *game);
+void    clean_up(t_game *game);
 
 // printing errors
 void	print_error(int error);

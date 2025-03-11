@@ -2,10 +2,12 @@
 
 void    clean_up(t_game *game)
 {
+    free_grid(game->map);
+    destroy_images(game);
     mlx_destroy_window(game->mlx, game->win);
     mlx_destroy_display(game->mlx);
     free(game->mlx);
-    exit(1);
+    exit(EXIT_SUCCESS);
 }
 
 static void init_images(t_game *game)
@@ -14,6 +16,11 @@ static void init_images(t_game *game)
     game->blocks.grass = mlx_xpm_file_to_image(game->mlx, GRASS, &game->pxl, &game->pxl);
     game->blocks.cobble = mlx_xpm_file_to_image(game->mlx, COBBLE, &game->pxl, &game->pxl);
     game->blocks.cobble_t = mlx_xpm_file_to_image(game->mlx, COBBLE_T, &game->pxl, &game->pxl);
+    if (!game->blocks.grass || !game->blocks.cobble || !game->blocks.cobble_t )
+    {
+        print_error(IMAGE);
+        clean_up(game);
+    }
 }
 
 static void init_window(t_parse *parse, t_game *game)
@@ -35,19 +42,16 @@ static void    build_map(char *map_name, t_parse *parse, t_game *game, int fd)
 		exit(EXIT_FAILURE);
     }
     game->map = create_2d_grid(fd, parse);
+    close(fd);
     init_images(game);
     fill_map(game);
-    // print_grid(game->map);
-    // free_grid(game->map);
-    // close(fd);
 }
 
-void    game_loop(char *map_name, t_parse *parse, int fd)
+void    load_game(char *map_name, t_parse *parse, int fd)
 {
     t_game  game;
 
     init_window(parse, &game);
     build_map(map_name, parse, &game, fd);
-    // clean_up(&game);
-    mlx_loop(game.mlx);
+    game_loop(&game);
 }

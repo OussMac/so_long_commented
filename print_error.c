@@ -23,4 +23,6 @@ void	print_error(int error)
 		ft_putstr_fd("Malloc Failure.\n", STDERR_FILENO);
 	else if (error == PATH_BLOCKED)
 		ft_putstr_fd("Player Path Blocked.\n", STDERR_FILENO);
+	else if (error == IMAGE)
+		ft_putstr_fd("Invalid Texture.\n", STDERR_FILENO);
 }

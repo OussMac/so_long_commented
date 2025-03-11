@@ -10,6 +10,6 @@ int	main(int argc, char *av[])
 	primary_parse(av[1], &parse, fd);
 	process_map(fd, &parse);
 	parse_path(av[1], &parse);
-	game_loop(av[1], &parse, fd);
+	load_game(av[1], &parse, fd);
 	return (EXIT_SUCCESS);
 }
