@@ -17,6 +17,11 @@ void    fill_map(t_game *game)
                 mlx_put_image_to_window(game->mlx, game->win, game->blocks.cobble_t, PIXELS * x, PIXELS * y);
             else if (game->map[y][x] == '1')
                 mlx_put_image_to_window(game->mlx, game->win, game->blocks.cobble, PIXELS * x, PIXELS * y);
+            if (game->map[y][x] == 'P')
+            {
+                mlx_put_image_to_window(game->mlx, game->win, game->blocks.grass, PIXELS * x, PIXELS * y);
+                mlx_put_image_to_window(game->mlx, game->win, game->blocks.cat, PIXELS * x, PIXELS * y);
+            }
             x++;
         }
         y++;

@@ -18,9 +18,10 @@
 // constants for the game loop
 # define PIXELS 96
 # define TITLE "ESCAPE MINECRAFT"
-# define GRASS "textures/grass_block2.xpm"
+# define GRASS "textures/simple.xpm"
 # define COBBLE "textures/cobble_block.xpm"
 # define COBBLE_T "textures/cobble_block_top.xpm"
+# define CAT "textures/cat.xpm"
 
 # define oussmalloc(...) NULL // for malloc failure testing.
 
@@ -30,6 +31,10 @@
 
 // key codes
 # define ESC 65307
+# define RIGHT 65363
+# define LEFT 65361
+# define UP 65362
+# define DOWN 65364
 
 # include <fcntl.h>  // for open and close.
 # include <stdlib.h> // for malloc, size_t
@@ -43,13 +48,23 @@ typedef struct s_blocks
     void    *grass;
     void    *cobble;
     void    *cobble_t;
+    void    *cat;
 }   t_blocks;
+
+typedef struct s_player
+{
+    int p_x;
+    int p_y;
+    int old_pos_x;
+    int old_pos_y;
+}   t_player;
 
 typedef struct s_game
 {
     int         pxl;
     char        **map;
     t_blocks    blocks;
+    t_player    player;
     void        *mlx;
     void        *win;
     int         map_w;
