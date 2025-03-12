@@ -21,7 +21,8 @@
 # define GRASS "textures/simple.xpm"
 # define COBBLE "textures/cobble_block.xpm"
 # define COBBLE_T "textures/cobble_block_top.xpm"
-# define CAT "textures/cat.xpm"
+# define CATR "textures/cat_right.xpm"
+# define CATL "textures/cat_left.xpm"
 
 # define oussmalloc(...) NULL // for malloc failure testing.
 
@@ -35,6 +36,8 @@
 # define LEFT 65361
 # define UP 65362
 # define DOWN 65364
+// close event
+# define CLOSE_EVENT 480622528
 
 # include <fcntl.h>  // for open and close.
 # include <stdlib.h> // for malloc, size_t
@@ -42,13 +45,15 @@
 # include <stdbool.h> // for boolean checks
 # include <math.h> // for randomizing blocks
 # include ".mlx_linux/mlx.h"
+#include <limits.h>
 
 typedef struct s_blocks
 {
     void    *grass;
     void    *cobble;
     void    *cobble_t;
-    void    *cat;
+    void    *catr;
+    void    *catl;
 }   t_blocks;
 
 typedef struct s_player
@@ -118,6 +123,8 @@ void    load_game(char *map_name, t_parse *parse, int fd);
 char    **create_2d_grid(int fd, t_parse *parse);
 void    fill_map(t_game *game);
 void    game_loop(t_game    *game);
+void    update_map(t_game *game);
+void    update_player(t_game *game, int *flag);
 void    free_grid(char **grid);
 void    destroy_images(t_game *game);
 void    clean_up(t_game *game);
