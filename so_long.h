@@ -23,6 +23,9 @@
 # define COBBLE_T "textures/cobble_block_top.xpm"
 # define CATR "textures/cat_right.xpm"
 # define CATL "textures/cat_left.xpm"
+# define CATU "textures/cat_up.xpm"
+# define CATD "textures/cat_down.xpm"
+# define FOOD "textures/food.xpm"
 
 # define oussmalloc(...) NULL // for malloc failure testing.
 
@@ -44,7 +47,7 @@
 # include <unistd.h> // for write
 # include <stdbool.h> // for boolean checks
 # include <math.h> // for randomizing blocks
-# include ".mlx_linux/mlx.h"
+# include "mlx_linux/mlx.h"
 #include <limits.h>
 
 typedef struct s_blocks
@@ -54,6 +57,9 @@ typedef struct s_blocks
     void    *cobble_t;
     void    *catr;
     void    *catl;
+    void    *catu;
+    void    *catd;
+    void    *food;
 }   t_blocks;
 
 typedef struct s_player
@@ -66,6 +72,7 @@ typedef struct s_player
 
 typedef struct s_game
 {
+    int         food;
     int         pxl;
     char        **map;
     t_blocks    blocks;

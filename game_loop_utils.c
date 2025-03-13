@@ -12,6 +12,12 @@ void    destroy_images(t_game *game)
         mlx_destroy_image(game->mlx, game->blocks.catr);
     if (game->blocks.catl)
         mlx_destroy_image(game->mlx, game->blocks.catl);
+    if (game->blocks.catu)
+        mlx_destroy_image(game->mlx, game->blocks.catu);
+    if (game->blocks.catd)
+        mlx_destroy_image(game->mlx, game->blocks.catd);
+    if (game->blocks.food)
+        mlx_destroy_image(game->mlx, game->blocks.food);
 }
 
 int player_input(int key, t_game *game)
@@ -31,8 +37,8 @@ int player_input(int key, t_game *game)
     else if (key == DOWN)
         game->player.p_y++;
     update_player(game, &flag);
-    print_grid(game->map);
-    puts("");
+    // print_grid(game->map);
+    // puts("");
     return (0);
 }
 

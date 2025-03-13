@@ -18,8 +18,12 @@ static void init_images(t_game *game)
     game->blocks.cobble_t = mlx_xpm_file_to_image(game->mlx, COBBLE_T, &game->pxl, &game->pxl);
     game->blocks.catr = mlx_xpm_file_to_image(game->mlx, CATR, &game->pxl, &game->pxl);
     game->blocks.catl = mlx_xpm_file_to_image(game->mlx, CATL, &game->pxl, &game->pxl);
+    game->blocks.catu = mlx_xpm_file_to_image(game->mlx, CATU, &game->pxl, &game->pxl);
+    game->blocks.catd = mlx_xpm_file_to_image(game->mlx, CATD, &game->pxl, &game->pxl);
+    game->blocks.food = mlx_xpm_file_to_image(game->mlx, FOOD, &game->pxl, &game->pxl);
     if (!game->blocks.grass || !game->blocks.cobble
-        || !game->blocks.cobble_t || !game->blocks.catr || !game->blocks.catl)
+        || !game->blocks.cobble_t || !game->blocks.catr || !game->blocks.catl 
+        || !game->blocks.catu || !game->blocks.catd || !game->blocks.food)
     {
         print_error(IMAGE);
         clean_up(game);
@@ -63,6 +67,7 @@ static void    build_map(char *map_name, t_parse *parse, t_game *game, int fd)
     close(fd);
     game->player.p_x = parse->player_x;
     game->player.p_y = parse->player_y;
+    game->food = parse->c_count;
     init_images(game);
     fill_map(game);
 }
