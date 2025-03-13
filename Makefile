@@ -1,6 +1,6 @@
 CC= cc
-FLAGS= -Wall -Werror -Wextra -O3 -I.mlx_linux -Wno-unused-result
-LDFLAGS = -L.mlx_linux -lmlx -lX11 -lXext -lm
+FLAGS= -Wall -Werror -Wextra -O3 -Imlx_linux -Wno-unused-result
+LDFLAGS = -Lmlx_linux -lmlx -lX11 -lXext -lm
 HEADER= so_long.h
 
 SRC=	so_long.c print_error.c print_utils.c get_next_line.c \
