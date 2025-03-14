@@ -53,7 +53,11 @@ void    fill(char **grid, t_pos p, t_parse *prs)
     if (grid[p.y][p.x] == 'C')
         prs->found_c++;
     if (grid[p.y][p.x] == 'E')
+    {
+        prs->door_x = p.x;
+        prs->door_y = p.y;
         prs->found_e++;
+    }
     grid[p.y][p.x] = 'V';
     fill(grid, (t_pos){p.x + 1, p.y}, prs);
     fill(grid, (t_pos){p.x - 1, p.y}, prs);

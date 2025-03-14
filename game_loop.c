@@ -21,9 +21,12 @@ static void init_images(t_game *game)
     game->blocks.catu = mlx_xpm_file_to_image(game->mlx, CATU, &game->pxl, &game->pxl);
     game->blocks.catd = mlx_xpm_file_to_image(game->mlx, CATD, &game->pxl, &game->pxl);
     game->blocks.food = mlx_xpm_file_to_image(game->mlx, FOOD, &game->pxl, &game->pxl);
+    game->blocks.exit_c = mlx_xpm_file_to_image(game->mlx, EXITC, &game->pxl, &game->pxl);
+    game->blocks.exit_o = mlx_xpm_file_to_image(game->mlx, EXITO, &game->pxl, &game->pxl);
     if (!game->blocks.grass || !game->blocks.cobble
         || !game->blocks.cobble_t || !game->blocks.catr || !game->blocks.catl 
-        || !game->blocks.catu || !game->blocks.catd || !game->blocks.food)
+        || !game->blocks.catu || !game->blocks.catd || !game->blocks.food
+        || !game->blocks.exit_c || !game->blocks.exit_o)
     {
         print_error(IMAGE);
         clean_up(game);
@@ -65,22 +68,14 @@ static void    build_map(char *map_name, t_parse *parse, t_game *game, int fd)
     }
     game->map = create_2d_grid(fd, parse);
     close(fd);
+    game->moves = 0;
     game->player.p_x = parse->player_x;
     game->player.p_y = parse->player_y;
+    game->door_x = parse->door_x;
+    game->door_y = parse->door_y;
     game->food = parse->c_count;
     init_images(game);
     fill_map(game);
-}
-
-void    load_logo(t_game *game)
-{
-    int w = game->blocks_x * PIXELS;
-    int h = game->blocks_y * PIXELS;
-    void *icon = mlx_xpm_file_to_image(game->mlx, "textures/page.xpm", &w, &h);
-    printf("==> %d\n", game->blocks_x * PIXELS);
-    printf("==> %d\n", game->blocks_y * PIXELS);
-    mlx_put_image_to_window(game->mlx, game->win, icon, 0 , 0);
-    sleep(2);
 }
 
 void    load_game(char *map_name, t_parse *parse, int fd)

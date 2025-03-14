@@ -18,6 +18,10 @@ void    destroy_images(t_game *game)
         mlx_destroy_image(game->mlx, game->blocks.catd);
     if (game->blocks.food)
         mlx_destroy_image(game->mlx, game->blocks.food);
+    if (game->blocks.exit_c)
+        mlx_destroy_image(game->mlx, game->blocks.exit_c);
+    if (game->blocks.exit_o)
+        mlx_destroy_image(game->mlx, game->blocks.exit_o);
 }
 
 int player_input(int key, t_game *game)
@@ -37,8 +41,6 @@ int player_input(int key, t_game *game)
     else if (key == DOWN)
         game->player.p_y++;
     update_player(game, &flag);
-    // print_grid(game->map);
-    // puts("");
     return (0);
 }
 
@@ -65,8 +67,6 @@ int mouse_input(int button,int x, int y, t_game *game)
         if (within_range(cen_x, p_x) && within_range(cen_y, p_y))
         {
             printf("player clicked.\n");
-            // mlx_string_put(game->mlx, game->win, p_x - 25, p_y - 48, 0xFFFFFF, "Hey stop that!");
-            clean_up(game);
         }
     }
     return (0);
@@ -86,7 +86,6 @@ int player_hold(t_game *game)
 
 int update_frames(t_game *game)
 {
-    (void)game;
     update_map(game);
     return (0);
 }

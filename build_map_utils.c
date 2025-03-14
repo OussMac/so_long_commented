@@ -1,20 +1,20 @@
 #include "so_long.h"
 
-static void print_moves(void)
+static void print_moves(t_game *game)
 {
     static int moves = 1;
 
+    game->moves = moves;
     ft_putstr_fd("[+] Moves ==> ", STDOUT_FILENO);
     ft_putnbr_fd(moves++, STDOUT_FILENO);
     ft_putstr_fd(".\n", STDOUT_FILENO);
 }
 
-static bool closest(int x, t_game *game)
+static bool wall(t_game *game)
 {
-    int diff;
-    diff = (game->blocks_x / 2) - x;
-    if (diff >= 0)
-        return(true);
+    if (game->map[game->player.p_y][game->player.p_x] != '1' 
+        && game->map[game->player.p_y][game->player.p_x] != 'E')
+        return (true);
     return (false);
 }
 
@@ -36,19 +36,7 @@ void    fill_map(t_game *game)
             else if (game->map[y][x] == '1')
                 mlx_put_image_to_window(game->mlx, game->win, game->blocks.cobble, PIXELS * x, PIXELS * y);
             if (game->map[y][x] == 'P')
-            {
-                mlx_put_image_to_window(game->mlx, game->win, game->blocks.grass, PIXELS * x, PIXELS * y);
-                if (closest(x, game))
-                {
-                    game->map[y][x] = 'R';
-                    mlx_put_image_to_window(game->mlx, game->win, game->blocks.catr, PIXELS * x, PIXELS * y);
-                }
-                else
-                {
-                    game->map[y][x] = 'L';
-                    mlx_put_image_to_window(game->mlx, game->win, game->blocks.catl, PIXELS * x, PIXELS * y);
-                }
-            }
+                player_fill(game, x, y);
             x++;
         }
         y++;
@@ -57,35 +45,23 @@ void    fill_map(t_game *game)
 
 void    update_map(t_game *game)
 {
+    char *mvs;
     int y;
     int x;
 
+    mvs = ft_itoa(game->moves);
     y = 0;
     if (game->food <= 0)
-        {
-            clean_up(game);
-            exit (EXIT_SUCCESS);
-        }
+        game->map[game->door_y][game->door_x] = 'O';
     while (y < game->blocks_y)
     {
         x = 0;
         while(x < game->blocks_x)
         {
-            if (game->map[y][x] == 'P' || game->map[y][x] == 'R' || game->map[y][x] == 'L' || game->map[y][x] == 'U' || game->map[y][x] == 'D')
-            {
-                if (game->map[y][x] == 'P'  || game->map[y][x] == 'R')
-                    mlx_put_image_to_window(game->mlx, game->win, game->blocks.catr, PIXELS * x, PIXELS * y);
-                else if (game->map[y][x] == 'L')
-                    mlx_put_image_to_window(game->mlx, game->win, game->blocks.catl, PIXELS * x, PIXELS * y);
-            }
-            else if (game->map[y][x] == 'C')
-                mlx_put_image_to_window(game->mlx, game->win, game->blocks.food, PIXELS * x, PIXELS * y);
-            else if(game->map[y][x] != '1')
-                mlx_put_image_to_window(game->mlx, game->win, game->blocks.grass, PIXELS * x, PIXELS * y);
-            else if(game->map[y][x] == '1' && y + 1 < game->blocks_y && game->map[y + 1][x] == '1')
-                mlx_put_image_to_window(game->mlx, game->win, game->blocks.cobble_t, PIXELS * x, PIXELS * y);
-            else if (game->map[y][x] == '1')
-                mlx_put_image_to_window(game->mlx, game->win, game->blocks.cobble, PIXELS * x, PIXELS * y);
+            update_blocks(game, x, y);
+            mlx_set_font(game->mlx, game->win, "-sony-fixed-medium-r-normal--24-230-75-75-c-120-iso8859-1");
+            mlx_string_put(game->mlx, game->win, 1.2 * PIXELS, 0.56 * PIXELS, 0xFFFFFF, "[+] ==> Moves :");
+            mlx_string_put(game->mlx, game->win, 3.1 * PIXELS, 0.56 * PIXELS, 0xFFFFFF, mvs);
             x++;
         }
         y++;
@@ -94,37 +70,20 @@ void    update_map(t_game *game)
 
 void    update_player(t_game *game, int *flag)
 {
-    if (game->map[game->player.p_y][game->player.p_x] != '1' && *flag != 0)
+    if (wall(game) && *flag != 0)
     {
         if (game->map[game->player.p_y][game->player.p_x] == 'C')
-        {
             game->food--;
-            ft_putstr_fd("[-] Eaten +1 Food!!!\n", 1);
+        else if (game->map[game->player.p_y][game->player.p_x] == 'O')
+        {
+            ft_putstr_fd("You Won!\n", STDOUT_FILENO);
+            clean_up(game);
         }
         game->map[game->player.old_pos_y][game->player.old_pos_x] = '0';
         game->map[game->player.p_y][game->player.p_x] = 'P';
         mlx_put_image_to_window(game->mlx, game->win, game->blocks.grass, PIXELS * game->player.old_pos_x, PIXELS * game->player.old_pos_y);
-        if (game->player.old_pos_x < game->player.p_x)
-        {
-            game->map[game->player.p_y][game->player.p_x] = 'R';
-            mlx_put_image_to_window(game->mlx, game->win, game->blocks.catr, PIXELS * game->player.p_x, PIXELS * game->player.p_y);
-        }
-        else if (game->player.old_pos_x > game->player.p_x)
-        {
-            game->map[game->player.p_y][game->player.p_x] = 'L';
-            mlx_put_image_to_window(game->mlx, game->win, game->blocks.catl, PIXELS * game->player.p_x, PIXELS * game->player.p_y);
-        }
-        else if (game->player.old_pos_y < game->player.p_y)
-        {
-            game->map[game->player.p_y][game->player.p_x] = 'D';
-            mlx_put_image_to_window(game->mlx, game->win, game->blocks.catd, PIXELS * game->player.p_x, PIXELS * game->player.p_y);
-        }
-        else if (game->player.old_pos_y > game->player.p_y)
-        {
-            game->map[game->player.p_y][game->player.p_x] = 'U';
-            mlx_put_image_to_window(game->mlx, game->win, game->blocks.catu, PIXELS * game->player.p_x, PIXELS * game->player.p_y);
-        }
-        print_moves();
+        player_dir(game);
+        print_moves(game);
     }
     else
     {

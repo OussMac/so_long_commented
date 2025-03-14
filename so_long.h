@@ -26,6 +26,8 @@
 # define CATU "textures/cat_up.xpm"
 # define CATD "textures/cat_down.xpm"
 # define FOOD "textures/food.xpm"
+# define EXITC "textures/exit_closed.xpm"
+# define EXITO "textures/exit_open.xpm"
 
 # define oussmalloc(...) NULL // for malloc failure testing.
 
@@ -39,6 +41,10 @@
 # define LEFT 65361
 # define UP 65362
 # define DOWN 65364
+# define KEY_MAX 4
+# define PRESSED 1
+# define RELEASED 0
+
 // close event
 # define CLOSE_EVENT 480622528
 
@@ -47,7 +53,7 @@
 # include <unistd.h> // for write
 # include <stdbool.h> // for boolean checks
 # include <math.h> // for randomizing blocks
-# include "mlx_linux/mlx.h"
+# include ".mlx_linux/mlx.h"
 #include <limits.h>
 
 typedef struct s_blocks
@@ -60,6 +66,8 @@ typedef struct s_blocks
     void    *catu;
     void    *catd;
     void    *food;
+    void    *exit_c;
+    void    *exit_o;
 }   t_blocks;
 
 typedef struct s_player
@@ -83,6 +91,9 @@ typedef struct s_game
     int         map_h;
     int         blocks_x;
     int         blocks_y;
+    int         door_x;
+    int         door_y;
+    int         moves;
 }   t_game;
 
 typedef struct s_parse
@@ -98,6 +109,8 @@ typedef struct s_parse
     int player_y;
     int found_c;
     int found_e;
+    int door_x;
+    int door_y;
 }   t_parse;
 
 // struct for the floodfill algorithm.
@@ -135,6 +148,12 @@ void    update_player(t_game *game, int *flag);
 void    free_grid(char **grid);
 void    destroy_images(t_game *game);
 void    clean_up(t_game *game);
+char	*ft_itoa(int n);
+
+// build_map helpers
+void    player_fill(t_game *game, int x, int y);
+void    update_blocks(t_game *game, int x, int y);
+void    player_dir(t_game *game);
 
 // printing errors
 void	print_error(int error);
